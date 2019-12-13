@@ -13,7 +13,7 @@ void main() {
     TimeProcess();
     TaskSetting();
     TaskProcess();
-    DisplayProcess();
+    // DisplayProcess();
   }
 }
 //=============================================================================
@@ -28,11 +28,20 @@ void TimeProcess() {
     second++;
   }
   if (timer5ms >= D_5ms) {
+    // 5ms 执行一次
+    timer5ms = 0;
     GetKeys();
   }
   if (second >= D_1000ms) {
     // 1s 执行一次
     second = 0;
+    vData = 0;
+  }
+  vData +=gData;
+  if (vData > 100) {
+    F_ledOn();
+  } else {
+    F_ledOff();
   }
 }
 //=============================================================================
@@ -40,11 +49,16 @@ void TaskProcess() {}
 //=============================================================================
 void TaskSetting() {
   if (D_keyValue1 == keyValue) {
-    F_ledNeg();
+    bLedFlash = ~bLedFlash;
   }
   keyValue = D_keyNull;
 }
 //=============================================================================
 void DisplayProcess() {
   // F_ledOn();
+  if (bLedFlash) {
+    F_ledOn();
+  } else {
+    F_ledOff();
+  }
 }
